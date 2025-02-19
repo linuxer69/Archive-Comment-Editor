@@ -1,5 +1,4 @@
 "# Archive-Comment-Editor" 
-اینجا یک توضیح کامل و حرفه‌ای برای پروژه شماست که می‌توانید در **GitHub** قرار دهید:  
 
 ---
 
@@ -64,4 +63,3 @@ This project is **open-source** under the [MIT License](LICENSE).
 
 ---
 
-این توضیح برای GitHub **حرفه‌ای، خوانا و کامل** است. 🚀
