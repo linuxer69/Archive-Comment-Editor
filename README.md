@@ -34,7 +34,7 @@ sudo apt install rar
 ## **Usage**  
 Run the application:  
 ```bash
-python archive_comment_editor.py
+python 1.py
 ```
 
 ### **How It Works**  
