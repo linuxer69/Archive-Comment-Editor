@@ -14,31 +14,31 @@ class ArchiveCommentEditor(QWidget):
         layout = QVBoxLayout()
         
         self.text_edit = QTextEdit(self)
-        self.text_edit.setPlaceholderText("متن کامنت جدید را وارد کنید")
+        self.text_edit.setPlaceholderText("Enter new comment text")
         layout.addWidget(self.text_edit)
         
-        self.btn_select = QPushButton("انتخاب فایل‌های ZIP و RAR", self)
+        self.btn_select = QPushButton("Select ZIP and RAR files", self)
         self.btn_select.clicked.connect(self.select_archive_files)
         layout.addWidget(self.btn_select)
         
-        self.btn_apply = QPushButton("اعمال تغییرات", self)
+        self.btn_apply = QPushButton("Apply Changes", self)
         self.btn_apply.clicked.connect(self.apply_comments)
         layout.addWidget(self.btn_apply)
         
         self.setLayout(layout)
-        self.setWindowTitle("ویرایش کامنت فایل‌های ZIP و RAR")
+        self.setWindowTitle("Edit ZIP and RAR File Comments")
         self.resize(400, 200)
     
     def select_archive_files(self):
-        files, _ = QFileDialog.getOpenFileNames(self, "انتخاب فایل ZIP یا RAR", "", "Archive Files (*.zip *.rar)")
+        files, _ = QFileDialog.getOpenFileNames(self, "Select ZIP or RAR files", "", "Archive Files (*.zip *.rar)")
         if files:
             self.archive_files = files
-            QMessageBox.information(self, "انتخاب شد", f"{len(files)} فایل انتخاب شد.")
+            QMessageBox.information(self, "Selected", f"{len(files)} files selected.")
     
     def apply_comments(self):
         new_comment = self.text_edit.toPlainText()
         if not self.archive_files:
-            QMessageBox.warning(self, "خطا", "هیچ فایلی انتخاب نشده است!")
+            QMessageBox.warning(self, "Error", "No files selected!")
             return
         
         for archive_path in self.archive_files:
@@ -49,19 +49,19 @@ class ArchiveCommentEditor(QWidget):
                 elif archive_path.endswith('.rar'):
                     self.set_rar_comment(archive_path, new_comment)
             except Exception as e:
-                QMessageBox.critical(self, "خطا", f"مشکلی در تغییر کامنت {archive_path} پیش آمد: {str(e)}")
+                QMessageBox.critical(self, "Error", f"Error modifying comment for {archive_path}: {str(e)}")
                 return
         
-        QMessageBox.information(self, "انجام شد", "کامنت تمامی فایل‌های ZIP و RAR تغییر یافت.")
+        QMessageBox.information(self, "Done", "Comments updated for all selected ZIP and RAR files.")
         self.archive_files = []
     
     def set_rar_comment(self, rar_path, comment):
         try:
             subprocess.run(["rar", "c", f"-z{comment}", rar_path], check=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
         except FileNotFoundError:
-            QMessageBox.critical(self, "خطا", "برنامه RAR روی سیستم شما نصب نیست!")
+            QMessageBox.critical(self, "Error", "RAR program is not installed on your system!")
         except Exception as e:
-            QMessageBox.critical(self, "خطا", f"خطا در تنظیم کامنت RAR: {str(e)}")
+            QMessageBox.critical(self, "Error", f"Error setting RAR comment: {str(e)}")
 
 if __name__ == "__main__":
     app = QApplication(sys.argv)
